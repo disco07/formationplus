@@ -3,5 +3,40 @@
 {% block title %}Hello Drissa!{% endblock %}
 
 {% block body %}
-    {{ form(form) }}
+    {{ form_start(form) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {{ form_widget(form.etudiant, {'attr': {'class': 'etudiant'}}) }}
+        </div>
+        <div class="col" id="some-custom-id">
+            {{ form_widget(form.convention) }}
+        </div>
+        {{ form_widget(form.message) }}
+    </div>
+    <input type="submit">
+    {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+<script>
+    let nom_etudiant;
+    let text
+    const etudiant = document.querySelector(".etudiant");
+    const message = document.querySelector("#formation_message");
+    etudiant.addEventListener("change", e => {
+        nom_etudiant = e.target.options[e.target.selectedIndex].text
+        text = `Bonjour ${nom_etudiant},
+                Vous avez suivi #nbHeur# de formation chez FormationPlus.
+                Pouvez-vous nous retourner ce mail avec la pièce jointe signée.
+                Cordialement,
+                FormationPlus
+`
+        console.log(text)
+        message.value = text
+    })
+
+</script>
 {% endblock %}
